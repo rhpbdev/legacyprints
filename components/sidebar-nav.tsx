@@ -25,7 +25,8 @@ export function SidebarNav({ isCollapsed = false }: SidebarNavProps) {
 						<Link
 							href={href}
 							className='flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-150 hover:bg-muted/50'
-							title={isCollapsed ? name : undefined}>
+							title={isCollapsed ? name : undefined}
+							prefetch={false}>
 							<Icon className='h-6 w-6 shrink-0' />
 							{!isCollapsed && <span className='text-sm ml-1'>{name}</span>}
 						</Link>

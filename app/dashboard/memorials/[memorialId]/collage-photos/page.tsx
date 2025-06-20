@@ -44,18 +44,24 @@ export default async function CollagePhotosPage({ params }: PageProps) {
 				<BreadcrumbList>
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href='/dashboard'>Dashboard</Link>
+							<Link href='/dashboard' prefetch={false}>
+								Dashboard
+							</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href='/dashboard/memorials'>Memorials</Link>
+							<Link href='/dashboard/memorials' prefetch={false}>
+								Memorials
+							</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />
 					<BreadcrumbLink asChild>
-						<Link href={`/dashboard/memorials/${memorial?.id}`}>
+						<Link
+							href={`/dashboard/memorials/${memorial?.id}`}
+							prefetch={false}>
 							Edit Memorial
 						</Link>
 					</BreadcrumbLink>

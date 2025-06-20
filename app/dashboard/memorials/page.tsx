@@ -66,7 +66,9 @@ export default async function MemorialsPage({
 				<BreadcrumbList>
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href='/dashboard'>Dashboard</Link>
+							<Link href='/dashboard' prefetch={false}>
+								Dashboard
+							</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />

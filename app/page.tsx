@@ -1,103 +1,345 @@
-import Image from "next/image";
+import { Button } from '@/components/ui/button';
+import {
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui/card';
+import {
+	ArrowRight,
+	Download,
+	Palette, // Keep Palette as it's used
+	LayoutTemplate, // Keep LayoutTemplate as it's used
+	Star, // Keep Star as it's used
+	// Removed FileText, Heart, MessageSquare, Share2, Users as they are not used in this file
+} from 'lucide-react';
+import Image from 'next/image'; // Import Next.js Image component
+import Link from 'next/link';
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+const HomePage = () => {
+	return (
+		<>
+			{/* Hero Section */}
+			<section className='pt-48 pb-32 px-6 md:px-16 bg-gradient-to-br from-slate-50 to-slate-200'>
+				<div className='container mx-auto flex flex-col items-center text-center max-w-4xl gap-y-8'>
+					<h1 className='text-5xl md:text-6xl font-bold leading-tight'>
+						Create Beautiful & Lasting Memorial Tributes
+					</h1>
+					<p className='text-lg md:text-xl text-slate-700 max-w-2xl'>
+						Effortlessly design and personalize funeral programs, registry
+						books, thank you cards, and more with our intuitive templates. Honor
+						their memory with a tribute as unique as their life.
+					</p>
+					<div className='flex flex-col sm:flex-row gap-4 mt-6'>
+						<Button
+							asChild
+							size='lg'
+							className='bg-slate-800 hover:bg-slate-700 text-white px-8 py-6 text-lg'>
+							<Link href='/dashboard' prefetch={false}>
+								Get Started <ArrowRight className='ml-2 h-5 w-5' />
+							</Link>
+						</Button>
+						<Button
+							size='lg'
+							variant='outline'
+							className='border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white px-8 py-6 text-lg'>
+							How It Works
+						</Button>
+					</div>
+				</div>
+			</section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
-}
+			{/* Features Section */}
+			<section id='features' className='py-24 px-6 md:px-16 bg-white'>
+				<div className='container mx-auto text-center max-w-5xl'>
+					<h2 className='text-4xl font-bold mb-6 text-slate-800'>
+						Why Choose Us?
+					</h2>
+					<p className='text-lg text-slate-600 mb-16 max-w-3xl mx-auto'>
+						We provide the tools you need to create dignified and personalized
+						tributes during a difficult time, focusing on ease of use, quality,
+						and compassionate design.
+					</p>
+					<div className='grid md:grid-cols-3 gap-8'>
+						<Card className='shadow-lg hover:shadow-xl transition-shadow duration-300'>
+							<CardHeader className='items-center'>
+								<div className='p-4 bg-slate-100 rounded-full mb-4'>
+									<Palette className='h-10 w-10 text-slate-700' />
+								</div>
+								<CardTitle className='text-2xl font-semibold'>
+									Easy Customization
+								</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<p className='text-slate-600'>
+									Personalize every detail with our user-friendly editor. No
+									design skills needed. Change text, photos, colors, and layouts
+									with ease.
+								</p>
+							</CardContent>
+						</Card>
+						<Card className='shadow-lg hover:shadow-xl transition-shadow duration-300'>
+							<CardHeader className='items-center'>
+								<div className='p-4 bg-slate-100 rounded-full mb-4'>
+									<LayoutTemplate className='h-10 w-10 text-slate-700' />
+								</div>
+								<CardTitle className='text-2xl font-semibold'>
+									Elegant Templates
+								</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<p className='text-slate-600'>
+									Choose from a wide variety of professionally designed
+									templates for funeral programs, prayer cards, and more,
+									suitable for any style.
+								</p>
+							</CardContent>
+						</Card>
+						<Card className='shadow-lg hover:shadow-xl transition-shadow duration-300'>
+							<CardHeader className='items-center'>
+								<div className='p-4 bg-slate-100 rounded-full mb-4'>
+									<Download className='h-10 w-10 text-slate-700' />
+								</div>
+								<CardTitle className='text-2xl font-semibold'>
+									Print or Share Digitally
+								</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<p className='text-slate-600'>
+									Download high-resolution files for printing at home or with a
+									professional printer, or share digitally with family and
+									friends.
+								</p>
+							</CardContent>
+						</Card>
+					</div>
+				</div>
+			</section>
+
+			{/* How It Works Section */}
+			<section id='how-it-works' className='py-24 px-6 md:px-16 bg-slate-50'>
+				<div className='container mx-auto text-center max-w-5xl'>
+					<h2 className='text-4xl font-bold mb-6 text-slate-800'>
+						Create in 3 Simple Steps
+					</h2>
+					<p className='text-lg text-slate-600 mb-16 max-w-3xl mx-auto'>
+						Designing a meaningful tribute is straightforward and stress-free
+						with our guided process.
+					</p>
+					<div className='grid md:grid-cols-3 gap-8 text-left'>
+						<div className='flex flex-col items-center text-center p-6'>
+							<div className='relative mb-4'>
+								<div className='p-6 bg-slate-800 text-white rounded-full text-2xl font-bold w-16 h-16 flex items-center justify-center'>
+									1
+								</div>
+							</div>
+							<h3 className='text-2xl font-semibold mb-2'>Select a Template</h3>
+							<p className='text-slate-600'>
+								Browse our collection of beautifully crafted templates. Find the
+								perfect style to honor your loved one.
+							</p>
+						</div>
+						<div className='flex flex-col items-center text-center p-6'>
+							<div className='relative mb-4'>
+								<div className='p-6 bg-slate-800 text-white rounded-full text-2xl font-bold w-16 h-16 flex items-center justify-center'>
+									2
+								</div>
+							</div>
+							<h3 className='text-2xl font-semibold mb-2'>
+								Personalize Details
+							</h3>
+							<p className='text-slate-600'>
+								Add photos, obituary text, service details, and special memories
+								using our intuitive online editor.
+							</p>
+						</div>
+						<div className='flex flex-col items-center text-center p-6'>
+							<div className='relative mb-4'>
+								<div className='p-6 bg-slate-800 text-white rounded-full text-2xl font-bold w-16 h-16 flex items-center justify-center'>
+									3
+								</div>
+							</div>
+							<h3 className='text-2xl font-semibold mb-2'>Download & Print</h3>
+							<p className='text-slate-600'>
+								Once you&apos;re satisfied, download your design as a
+								print-ready PDF or share it digitally with ease.
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{/* Templates Showcase Section */}
+			<section id='templates' className='py-24 px-6 md:px-16 bg-white'>
+				<div className='container mx-auto text-center max-w-6xl'>
+					<h2 className='text-4xl font-bold mb-6 text-slate-800'>
+						Our Template Collection
+					</h2>
+					<p className='text-lg text-slate-600 mb-16 max-w-3xl mx-auto'>
+						Find the perfect way to tell their story. Our templates cater to
+						diverse needs, from classic bifold and trifold programs to memorial
+						cards and more.
+					</p>
+					<div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-8'>
+						{[
+							{
+								title: 'Classic Bifold Programs',
+								description:
+									'Timeless and elegant, perfect for traditional services. Ample space for photos and text.',
+							},
+							{
+								title: 'Modern Trifold Programs',
+								description:
+									'Contemporary designs with flexible layouts for a comprehensive tribute.',
+							},
+							{
+								title: 'Memorial Registry Books',
+								description:
+									'Beautifully designed guest books to capture cherished memories and condolences.',
+							},
+							{
+								title: 'Thank You Cards',
+								description:
+									'Express gratitude with personalized cards that match your chosen program theme.',
+							},
+							{
+								title: 'Prayer Cards',
+								description:
+									'Small, shareable keepsakes featuring a photo, prayer, or special verse.',
+							},
+							{
+								title: 'Digital Memorials',
+								description:
+									'Easily shareable online tributes accessible to friends and family anywhere.',
+							},
+						].map((template) => (
+							<Card
+								key={template.title}
+								className='overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col'>
+								<div className='w-full h-48 bg-slate-200 flex items-center justify-center relative'>
+									<Image
+										src='/images/placeholder.webp'
+										alt={template.title}
+										width={150}
+										height={100}
+										className='transition-transform duration-300 ease-in-out group-hover:scale-105'
+										loading='lazy'
+									/>
+								</div>
+								<CardHeader>
+									<CardTitle className='text-xl font-semibold'>
+										{template.title}
+									</CardTitle>
+								</CardHeader>
+								<CardContent className='flex-grow'>
+									<p className='text-slate-600 text-sm'>
+										{template.description}
+									</p>
+								</CardContent>
+								<CardFooter>
+									<Button
+										variant='outline'
+										className='w-full border-slate-700 text-slate-700 hover:bg-slate-700 hover:text-white'>
+										View Details
+									</Button>
+								</CardFooter>
+							</Card>
+						))}
+					</div>
+					<Button
+						size='lg'
+						className='mt-12 bg-slate-800 hover:bg-slate-700 text-white px-8 py-3 text-lg'>
+						Browse All Templates <ArrowRight className='ml-2 h-5 w-5' />
+					</Button>
+				</div>
+			</section>
+
+			{/* Testimonials Section */}
+			<section id='testimonials' className='py-24 px-6 md:px-16 bg-slate-50'>
+				<div className='container mx-auto text-center max-w-5xl'>
+					<h2 className='text-4xl font-bold mb-6 text-slate-800'>
+						Kind Words From Our Users
+					</h2>
+					<p className='text-lg text-slate-600 mb-16 max-w-3xl mx-auto'>
+						Hear how we&apos;ve helped families create meaningful tributes
+						during their time of need.
+					</p>
+					<div className='grid md:grid-cols-2 gap-8'>
+						<Card className='bg-white shadow-lg'>
+							<CardHeader>
+								<div className='flex items-center mb-2'>
+									{[...Array(5)].map((_, i) => (
+										<Star
+											key={i}
+											className='h-5 w-5 text-yellow-400 fill-yellow-400'
+										/>
+									))}
+								</div>
+								<CardTitle className='text-xl font-semibold'>
+									&quot;So Easy and Beautiful&quot;
+								</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<p className='text-slate-600 italic'>
+									&quot;During such a difficult time, this site made creating a
+									beautiful program for my father&apos;s service so much easier.
+									The templates were lovely and easy to customize. Thank
+									you!&quot;
+								</p>
+							</CardContent>
+							<CardFooter>
+								<p className='text-sm text-slate-500'>- Sarah M.</p>
+							</CardFooter>
+						</Card>
+						<Card className='bg-white shadow-lg'>
+							<CardHeader>
+								<div className='flex items-center mb-2'>
+									{[...Array(5)].map((_, i) => (
+										<Star
+											key={i}
+											className='h-5 w-5 text-yellow-400 fill-yellow-400'
+										/>
+									))}
+								</div>
+								<CardTitle className='text-xl font-semibold'>
+									&quot;Exactly What We Needed&quot;
+								</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<p className='text-slate-600 italic'>
+									&quot;We were overwhelmed, and your platform provided a
+									straightforward way to create a dignified registry book. The
+									quality was excellent, and we received many compliments.&quot;
+								</p>
+							</CardContent>
+							<CardFooter>
+								<p className='text-sm text-slate-500'>- John B.</p>
+							</CardFooter>
+						</Card>
+					</div>
+				</div>
+			</section>
+
+			{/* Call to Action Section */}
+			<section className='py-24 px-6 md:px-16 bg-slate-800 text-white'>
+				<div className='container mx-auto text-center max-w-3xl'>
+					<h2 className='text-4xl font-bold mb-6'>
+						Ready to Create a Lasting Tribute?
+					</h2>
+					<p className='text-lg text-slate-300 mb-10'>
+						Begin designing a beautiful memorial for your loved one today. Our
+						tools and templates are here to support you every step of the way.
+					</p>
+					<Button
+						size='lg'
+						className='bg-white text-slate-800 hover:bg-slate-200 px-10 py-6 text-xl font-semibold'>
+						Get Started Now
+					</Button>
+				</div>
+			</section>
+		</>
+	);
+};
+
+export default HomePage;

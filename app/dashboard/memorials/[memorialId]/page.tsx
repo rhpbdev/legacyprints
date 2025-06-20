@@ -41,13 +41,17 @@ export default async function EditMemorialPage({
 				<BreadcrumbList>
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href='/dashboard'>Dashboard</Link>
+							<Link href='/dashboard' prefetch={false}>
+								Dashboard
+							</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href='/dashboard/memorials'>Memorials</Link>
+							<Link href='/dashboard/memorials' prefetch={false}>
+								Memorials
+							</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />
@@ -69,7 +73,9 @@ export default async function EditMemorialPage({
 				<CardContent>
 					<EditMemorialForm memorial={memorial} themes={themes} />
 					<Button asChild variant={'outline'} className='w-full mt-2'>
-						<Link href='/dashboard'>Manage Collage Photos</Link>
+						<Link href='/dashboard' prefetch={false}>
+							Manage Collage Photos
+						</Link>
 					</Button>
 				</CardContent>
 			</Card>

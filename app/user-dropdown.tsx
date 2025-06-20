@@ -12,7 +12,7 @@ export default function UserDropdown() {
 			appearance={{
 				elements: {
 					userButtonOuterIdentifier: {
-						color: 'white',
+						color: '',
 						'@media (max-width: 640px)': {
 							display: 'none',
 						},

@@ -20,13 +20,17 @@ export default async function NewMemorialPage() {
 				<BreadcrumbList>
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href='/dashboard'>Dashboard</Link>
+							<Link href='/dashboard' prefetch={false}>
+								Dashboard
+							</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />
 					<BreadcrumbItem>
 						<BreadcrumbLink asChild>
-							<Link href='/dashboard/memorials'>Memorials</Link>
+							<Link href='/dashboard/memorials' prefetch={false}>
+								Memorials
+							</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator />

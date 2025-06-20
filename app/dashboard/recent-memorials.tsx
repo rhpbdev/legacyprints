@@ -14,10 +14,14 @@ export default function RecentMemorials() {
 					<span>Recent Memorials</span>
 					<div className='flex gap-2'>
 						<Button asChild variant='outline'>
-							<Link href='/dashboard/memorials'>View All</Link>
+							<Link href='/dashboard/memorials' prefetch={false}>
+								View All
+							</Link>
 						</Button>
 						<Button asChild>
-							<Link href='/dashboard/memorials/new'>Create New</Link>
+							<Link href='/dashboard/memorials/new' prefetch={false}>
+								Create New
+							</Link>
 						</Button>
 					</div>
 				</CardTitle>

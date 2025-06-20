@@ -2,13 +2,10 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
-import Link from 'next/link';
-import { BookUserIcon } from 'lucide-react';
-import { ClerkProvider, SignedIn } from '@clerk/nextjs';
-import { SignedOut, SignInButton, SignUpButton } from '@clerk/nextjs';
-import { Button } from '@/components/ui/button';
-import UserDropdown from './user-dropdown';
+import { ClerkProvider } from '@clerk/nextjs';
 import { Toaster } from 'sonner';
+import Footer from '@/components/shared/footer';
+import Navbar from '@/components/shared/navbar';
 
 const poppins = Poppins({
 	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -30,36 +27,10 @@ export default function RootLayout({
 		<ClerkProvider>
 			<html lang='en'>
 				<body className={`${poppins.variable} antialiased`}>
-					<nav className='bg-primary p-4 text-white h-20 flex items-center justify-between'>
-						<Link
-							href='/'
-							className='font-bold text-2xl flex gap-2 items-center'>
-							<BookUserIcon className='text-yellow-500' /> LegacyPrints
-						</Link>
-						<div>
-							<SignedOut>
-								<div className='flex items-center'>
-									<Button
-										asChild
-										variant='link'
-										className='text-white cursor-pointer'>
-										<SignInButton />
-									</Button>
-									<Button
-										asChild
-										variant='link'
-										className='text-white cursor-pointer'>
-										<SignUpButton />
-									</Button>
-								</div>
-							</SignedOut>
-							<SignedIn>
-								<UserDropdown />
-							</SignedIn>
-						</div>
-					</nav>
+					<Navbar />
 					{children}
 					<Toaster richColors={true} />
+					<Footer />
 				</body>
 			</html>
 		</ClerkProvider>
