@@ -1,49 +1,39 @@
 'use client';
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { SidebarNav } from './sidebar-nav';
 
 interface SidebarProps {
 	title?: string;
 }
 
-export function Sidebar({ title = 'Dashboard' }: SidebarProps) {
-	const [isCollapsed, setIsCollapsed] = useState(false);
-
-	const toggleSidebar = () => {
-		setIsCollapsed((prev) => !prev);
-	};
+export function Sidebar({ title = 'Navigation' }: SidebarProps) {
+	const [collapsed, setCollapsed] = useState(false);
 
 	return (
-		<div
-			className={`hidden md:flex flex-col h-screen border-r bg-background transition-all duration-200 ease-in-out relative ${
-				isCollapsed ? 'w-16' : 'w-64'
+		<aside
+			className={`hidden md:flex flex-col h-screen bg-background border-r transition-width duration-200 ease-in-out ${
+				collapsed ? 'w-16' : 'w-64'
 			}`}>
-			<div className='p-3 flex items-center justify-between relative'>
-				<h2
-					className={`text-lg font-semibold transition-all duration-200 ${
-						isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'
-					}`}>
-					{title}
-				</h2>
-				<div className='relative z-10'>
-					<button
-						type='button'
-						onClick={toggleSidebar}
-						className='inline-flex items-center justify-center size-9 rounded-md hover:bg-muted/50 transition-colors'
-						title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
-						{isCollapsed ? (
-							<ChevronRight className='h-4 w-4' />
-						) : (
-							<ChevronLeft className='h-4 w-4' />
-						)}
-					</button>
-				</div>
-			</div>
-			<nav className='flex-1 px-2 py-3 space-y-1'>
-				<SidebarNav isCollapsed={isCollapsed} />
+			<header className='flex items-center justify-between p-4'>
+				{!collapsed && <h2 className='text-lg font-semibold'>{title}</h2>}
+				<button
+					type='button'
+					onClick={() => setCollapsed(!collapsed)}
+					title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+					className='p-2 hover:bg-muted/50 rounded'>
+					{collapsed ? (
+						<ChevronRight className='w-4 h-4' />
+					) : (
+						<ChevronLeft className='w-4 h-4' />
+					)}
+				</button>
+			</header>
+
+			<nav className='flex-1 overflow-auto p-2'>
+				<SidebarNav isCollapsed={collapsed} />
 			</nav>
-		</div>
+		</aside>
 	);
 }

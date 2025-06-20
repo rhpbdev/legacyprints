@@ -10,12 +10,12 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getThemes } from '@/data/getThemes';
 import Link from 'next/link';
-import NewMemorialForm from './new-memorial-form';
+import NewMemorialForm from './new-memorial-form-revised';
 
 export default async function NewMemorialPage() {
 	const themes = await getThemes();
 	return (
-		<div className='max-w-screen-xl mx-auto py-10'>
+		<div className='container mx-auto px-4 py-8 max-w-7xl'>
 			<Breadcrumb>
 				<BreadcrumbList>
 					<BreadcrumbItem>
@@ -40,6 +40,7 @@ export default async function NewMemorialPage() {
 					<CardTitle>New Memorial</CardTitle>
 				</CardHeader>
 				<CardContent>
+					{/* <NewMemorialForm themes={themes} /> */}
 					<NewMemorialForm themes={themes} />
 				</CardContent>
 			</Card>

@@ -27,6 +27,8 @@ import { Calendar } from './ui/calendar';
 import { cn } from '@/lib/utils';
 import { Input } from './ui/input';
 import { type Themes } from '@/types/Themes';
+import { useState } from 'react';
+import Image from 'next/image';
 
 export const memorialFormSchema = z.object({
 	programStyle: z.enum(['bifold', 'trifold']),
@@ -48,7 +50,7 @@ export const memorialFormSchema = z.object({
 		.max(addDays(new Date(), 1), 'Sunrise date cannot be in the future'),
 	sunsetDate: z.coerce
 		.date()
-		.max(addDays(new Date(), 1), 'Sunset date cannot be in the future'),
+		.max(addDays(new Date(), 2), 'Sunset date cannot be in the future'),
 	serviceDate: z.coerce.date(),
 	serviceTime: z
 		.string()
@@ -62,7 +64,7 @@ export const memorialFormSchema = z.object({
 		.string()
 		.min(3, 'Service address must contain at least 3 characters')
 		.max(300, 'Service address must contain a maximum of 300 characters'),
-	deceasedPhoto: z
+	deceasedPhotoUrl: z
 		.instanceof(File)
 		.refine((file) => file.size >= 10_000, {
 			message: 'File must be at least 10KB',
@@ -84,10 +86,32 @@ export const memorialFormSchema = z.object({
 
 type Props = {
 	themes: Themes[];
-	onSubmit: (data: z.infer<typeof memorialFormSchema>) => Promise<void>;
+	onSubmit: (
+		data: z.infer<typeof memorialFormSchema>,
+		file?: File
+	) => Promise<void>;
+	previewUrl?: string;
+	defaultValues?: {
+		programStyle: 'bifold' | 'trifold';
+		quantity: number;
+		themeId: number;
+		deceasedName: string;
+		sunriseDate: Date;
+		sunsetDate: Date;
+		serviceDate: Date;
+		serviceLocation: string;
+		serviceAddress: string;
+		serviceTime: string;
+		deceasedPhotoUrl?: File;
+	};
 };
 
-export default function MemorialForm({ themes, onSubmit }: Props) {
+export default function MemorialForm({
+	themes,
+	onSubmit,
+	defaultValues,
+	previewUrl,
+}: Props) {
 	const form = useForm<z.infer<typeof memorialFormSchema>>({
 		resolver: zodResolver(memorialFormSchema),
 		defaultValues: {
@@ -101,15 +125,18 @@ export default function MemorialForm({ themes, onSubmit }: Props) {
 			serviceTime: '',
 			serviceLocation: '',
 			serviceAddress: '',
+			deceasedPhotoUrl: undefined,
+			...defaultValues,
 		},
 	});
 
+	const [file, setFile] = useState<File | undefined>(undefined);
 	const programStyle = form.watch('programStyle');
 	const filteredThemes = themes.filter((theme) => theme.type === programStyle);
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
+			<form onSubmit={form.handleSubmit((data) => onSubmit(data, file))}>
 				<fieldset
 					disabled={form.formState.isSubmitting}
 					className='grid grid-cols-2 gap-y-5 gap-x-2'>
@@ -122,6 +149,7 @@ export default function MemorialForm({ themes, onSubmit }: Props) {
 									<FormLabel>Program Style</FormLabel>
 									<FormControl>
 										<Select
+											value={field.value}
 											onValueChange={(newValue) => {
 												field.onChange(newValue);
 												form.setValue('themeId', 0);
@@ -170,7 +198,6 @@ export default function MemorialForm({ themes, onSubmit }: Props) {
 							);
 						}}
 					/>
-
 					<FormField
 						control={form.control}
 						name='sunriseDate'
@@ -346,10 +373,6 @@ export default function MemorialForm({ themes, onSubmit }: Props) {
 							);
 						}}
 					/>
-				</fieldset>
-				<fieldset
-					disabled={form.formState.isSubmitting}
-					className='mt-5 flex flex-col gap-5'>
 					<FormField
 						control={form.control}
 						name='deceasedName'
@@ -367,19 +390,18 @@ export default function MemorialForm({ themes, onSubmit }: Props) {
 					/>
 					<FormField
 						control={form.control}
-						name='deceasedPhoto'
-						render={({ field: { onChange, onBlur, name, ref } }) => (
+						name='deceasedPhotoUrl'
+						render={() => (
 							<FormItem>
 								<FormLabel>Cover Photo</FormLabel>
 								<FormControl>
 									<Input
 										type='file'
-										name={name}
-										accept='.gif,.jpg,.jpeg,.png'
-										onBlur={onBlur}
-										ref={ref}
+										accept='image/*'
 										onChange={(e) => {
-											onChange(e.target.files?.[0]); // Store single file in react-hook-form
+											if (e.target.files?.[0]) {
+												setFile(e.target.files[0]);
+											}
 										}}
 									/>
 								</FormControl>
@@ -387,6 +409,10 @@ export default function MemorialForm({ themes, onSubmit }: Props) {
 							</FormItem>
 						)}
 					/>
+				</fieldset>
+				<fieldset
+					disabled={form.formState.isSubmitting}
+					className='mt-5 grid grid-cols-2 gap-y-5 gap-x-2'>
 					<FormField
 						control={form.control}
 						name='quantity'
@@ -402,7 +428,27 @@ export default function MemorialForm({ themes, onSubmit }: Props) {
 							);
 						}}
 					/>
-					<Button type='submit'>Submit</Button>
+					{previewUrl && (
+						<div className='flex flex-col items-center'>
+							<Image
+								src={previewUrl}
+								alt='Current cover photo'
+								width={96}
+								height={96}
+								className='object-cover rounded-lg border'
+							/>
+							<figcaption className='text-xs text-muted-foreground'>
+								Current Cover Photo
+							</figcaption>
+						</div>
+					)}
+				</fieldset>
+				<fieldset
+					disabled={form.formState.isSubmitting}
+					className='mt-5 flex flex-col gap-5'>
+					<Button type='submit' className='cursor-pointer'>
+						Submit
+					</Button>
 				</fieldset>
 			</form>
 		</Form>
