@@ -54,13 +54,15 @@ export default async function MemorialsTable() {
 										aria-label='View Memorial'>
 										<Link
 											href={`/dashboard/memorials/${memorial.id}`}
-											title={`Edit ${memorial.deceasedName}`}>
+											title={`Edit ${memorial.deceasedName}`}
+											prefetch={false}>
 											<Image
 												src={memorial.deceasedPhotoUrl}
 												alt={memorial.deceasedName}
 												width={48}
 												height={48}
 												className='rounded'
+												loading='lazy'
 											/>
 										</Link>
 									</Button>
@@ -89,7 +91,8 @@ export default async function MemorialsTable() {
 										<Link
 											href={`/dashboard/memorials/${memorial.id}`}
 											title={`Edit ${memorial.deceasedName}`}
-											className='text-blue-500 hover:text-blue-600'>
+											className='text-blue-500 hover:text-blue-600'
+											prefetch={false}>
 											<PencilIcon />
 										</Link>
 									</Button>
@@ -101,7 +104,8 @@ export default async function MemorialsTable() {
 										<Link
 											href={`/dashboard/memorials/${memorial.id}/collage-photos`}
 											title={'Manage collage photos'}
-											className='text-blue-500 hover:text-blue-600'>
+											className='text-blue-500 hover:text-blue-600'
+											prefetch={false}>
 											<ImagesIcon />
 										</Link>
 									</Button>

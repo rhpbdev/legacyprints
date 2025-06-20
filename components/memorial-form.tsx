@@ -436,6 +436,7 @@ export default function MemorialForm({
 								width={96}
 								height={96}
 								className='object-cover rounded-lg border'
+								loading='lazy'
 							/>
 							<figcaption className='text-xs text-muted-foreground'>
 								Current Cover Photo
