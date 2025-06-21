@@ -17,6 +17,11 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 
+export const metadata = {
+	title: 'Edit Memorial',
+	description: '',
+};
+
 export default async function EditMemorialPage({
 	params,
 }: {
@@ -75,6 +80,13 @@ export default async function EditMemorialPage({
 					<Button asChild variant={'outline'} className='w-full mt-2'>
 						<Link href='/dashboard' prefetch={false}>
 							Manage Collage Photos
+						</Link>
+					</Button>
+					<Button asChild variant={'outline'} className='w-full mt-2'>
+						<Link
+							href={`/dashboard/memorials/${memorial.id}/canvas`}
+							prefetch={false}>
+							Customize Canvas
 						</Link>
 					</Button>
 				</CardContent>

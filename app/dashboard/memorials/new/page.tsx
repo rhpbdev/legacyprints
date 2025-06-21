@@ -12,6 +12,11 @@ import { getThemes } from '@/data/getThemes';
 import Link from 'next/link';
 import NewMemorialForm from './new-memorial-form-revised';
 
+export const metadata = {
+	title: 'New Memorial',
+	description: '',
+};
+
 export default async function NewMemorialPage() {
 	const themes = await getThemes();
 	return (

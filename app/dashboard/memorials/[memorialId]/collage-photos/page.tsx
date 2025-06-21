@@ -13,6 +13,11 @@ import {
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 
+export const metadata = {
+	title: 'Manage Collage Photos',
+	description: '',
+};
+
 interface PageProps {
 	params: Promise<{
 		memorialId: string;

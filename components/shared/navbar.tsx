@@ -16,7 +16,7 @@ import { EllipsisVertical } from 'lucide-react';
 
 const Navbar = () => {
 	return (
-		<nav className='fixed top-0 left-0 right-0 z-50 bg-white shadow-sm'>
+		<nav className='border-b bg-white'>
 			<div className='hidden container mx-auto px-6 py-4 md:flex justify-between items-center'>
 				<div className='text-2xl font-bold text-slate-800'>
 					<Link href='/' prefetch={false}>

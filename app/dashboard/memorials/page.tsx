@@ -27,6 +27,11 @@ import { Badge } from '@/components/ui/badge';
 import Filters from './filters';
 import { getMemorialsYearsRange } from '@/data/getMemorialsYearsRange';
 
+export const metadata = {
+	title: 'Memorials',
+	description: '',
+};
+
 const today = new Date();
 
 const searchSchema = z.object({

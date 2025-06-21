@@ -1,6 +1,11 @@
 // File: dashboard/page.tsx
 import RecentMemorials from './recent-memorials';
 
+export const metadata = {
+	title: 'Dashboard',
+	description: '',
+};
+
 export default function DashboardPage() {
 	return (
 		<div className='container mx-auto px-4 py-8 max-w-7xl'>
