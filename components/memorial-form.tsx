@@ -28,7 +28,7 @@ import { cn } from '@/lib/utils';
 import { Input } from './ui/input';
 import { type Themes } from '@/types/Themes';
 import { useState } from 'react';
-import Image from 'next/image';
+import { Image } from '@imagekit/next';
 
 export const memorialFormSchema = z.object({
 	programStyle: z.enum(['bifold', 'trifold']),

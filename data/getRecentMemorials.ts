@@ -17,13 +17,15 @@ export async function getRecentMemorials() {
 			quantity: memorialsTable.quantity,
 			serviceDate: memorialsTable.serviceDate,
 			deceasedPhotoUrl: memorialsTable.deceasedPhotoUrl,
+			createdAt: memorialsTable.createdAt,
+			updatedAt: memorialsTable.updatedAt,
 			theme: themesTable.name,
 			programType: themesTable.type,
 		})
 		.from(memorialsTable)
 		.where(eq(memorialsTable.userId, userId))
-		.orderBy(desc(memorialsTable.serviceDate))
-		.limit(5)
+		.orderBy(desc(memorialsTable.createdAt))
+		.limit(8)
 		.leftJoin(themesTable, eq(memorialsTable.themeId, themesTable.id));
 
 	return memorials;

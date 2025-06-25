@@ -16,15 +16,15 @@ import { EllipsisVertical } from 'lucide-react';
 
 const Navbar = () => {
 	return (
-		<nav className='border-b bg-white'>
-			<div className='hidden container mx-auto px-6 py-4 md:flex justify-between items-center'>
+		<nav className='border-b bg-slate-300'>
+			<div className='hidden container mx-auto px-6 py-4 lg:flex justify-between items-center'>
 				<div className='text-2xl font-bold text-slate-800'>
 					<Link href='/' prefetch={false}>
 						LegacyPrints
 					</Link>
 				</div>
 				{/* Replace with your App Name/Logo */}
-				<div className='space-x-4'>
+				<div className='flex space-x-4'>
 					<Button
 						asChild
 						variant='ghost'
@@ -45,21 +45,30 @@ const Navbar = () => {
 						asChild
 						variant='ghost'
 						className='text-slate-700 hover:text-slate-900'>
-						<Link href='/templates' prefetch={false}>
-							Templates
+						<Link href='/themes' prefetch={false}>
+							Themes
 						</Link>
 					</Button>
 					<Button
+						asChild
 						variant='ghost'
 						className='text-slate-700 hover:text-slate-900'>
-						Contact
+						<Link href='/contact' prefetch={false}>
+							Contact
+						</Link>
 					</Button>
 					<SignedOut>
 						<div className='flex items-center'>
-							<Button asChild variant='link' className='cursor-pointer'>
+							<Button
+								asChild
+								variant='link'
+								className='text-slate-700 hover:text-slate-900 cursor-pointer'>
 								<SignInButton />
 							</Button>
-							<Button asChild variant='link' className='cursor-pointer'>
+							<Button
+								asChild
+								variant='link'
+								className='text-slate-700 hover:text-slate-900 cursor-pointer'>
 								<SignUpButton />
 							</Button>
 						</div>
@@ -74,13 +83,13 @@ const Navbar = () => {
 					</Button>
 				</div>
 			</div>
-			<div className='md:hidden container mx-auto px-6 py-4 flex justify-between items-center'>
+			<div className='lg:hidden container mx-auto px-6 py-4 flex justify-between items-center'>
 				<div className='text-2xl font-bold text-slate-800'>
 					<Link href='/' prefetch={false}>
 						LegacyPrints
 					</Link>
 				</div>
-				<div className='flex gap-6'>
+				<div className='flex gap-2 items-center'>
 					<SignedOut>
 						<div className='flex items-center'>
 							<Button asChild variant='link' className='cursor-pointer'>
@@ -128,10 +137,10 @@ const Navbar = () => {
 									variant='ghost'
 									className='text-slate-700 hover:text-slate-900'>
 									<Link
-										href='/templates'
+										href='/themes'
 										prefetch={false}
 										className='justify-start'>
-										Templates
+										Themes
 									</Link>
 								</Button>
 								<Button
@@ -139,7 +148,7 @@ const Navbar = () => {
 									variant='ghost'
 									className='text-slate-700 hover:text-slate-900'>
 									<Link
-										href='/templates'
+										href='/contact'
 										prefetch={false}
 										className='justify-start'>
 										Contact

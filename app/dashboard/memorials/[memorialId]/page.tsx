@@ -2,7 +2,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getThemes } from '@/data/getThemes';
 import EditMemorialForm from './edit-memorial-form';
-// import EditMemorialFormRevised from './edit-memorial-form-revised';
 import { getMemorial } from '@/data/getMemorial';
 import { notFound } from 'next/navigation';
 import DeleteMemorialDialog from './delete-memorial-dialog';
@@ -15,7 +14,6 @@ import {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Button } from '@/components/ui/button';
 
 export const metadata = {
 	title: 'Edit Memorial',
@@ -77,18 +75,6 @@ export default async function EditMemorialPage({
 				</CardHeader>
 				<CardContent>
 					<EditMemorialForm memorial={memorial} themes={themes} />
-					<Button asChild variant={'outline'} className='w-full mt-2'>
-						<Link href='/dashboard' prefetch={false}>
-							Manage Collage Photos
-						</Link>
-					</Button>
-					<Button asChild variant={'outline'} className='w-full mt-2'>
-						<Link
-							href={`/dashboard/memorials/${memorial.id}/canvas`}
-							prefetch={false}>
-							Customize Canvas
-						</Link>
-					</Button>
 				</CardContent>
 			</Card>
 		</div>

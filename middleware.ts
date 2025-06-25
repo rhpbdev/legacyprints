@@ -1,12 +1,15 @@
-import {
-	clerkMiddleware,
-	createRouteMatcher,
-	auth,
-} from '@clerk/nextjs/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
 // create routes that should always be public
-const isPublicRoute = createRouteMatcher(['/', '/sign-in(.*)', '/sign-up(.*)']);
+const isPublicRoute = createRouteMatcher([
+	'/',
+	'/products',
+	'/themes',
+	'/contact',
+	'/sign-in(.*)',
+	'/sign-up(.*)',
+]);
 
 // the most common property you can access is request(req)
 export default clerkMiddleware(async (auth, request) => {

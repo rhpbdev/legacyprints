@@ -2,7 +2,11 @@
 'use server';
 
 import { db } from '@/db';
-import { memorialsTable } from '@/db/schema';
+import {
+	memorialProductsTable,
+	memorialsTable,
+	productsTable,
+} from '@/db/schema';
 import { memorialSchema } from '@/validation/memorialSchema';
 import { auth } from '@clerk/nextjs/server';
 import { z } from 'zod';
@@ -35,27 +39,50 @@ export const createMemorial = async (data: {
 		};
 	}
 
-	// insert validated data into the database. destructure the memorial data.
-	const [memorial] = await db
-		.insert(memorialsTable)
-		.values({
-			userId,
-			quantity: data.quantity.toString(),
-			deceasedName: data.deceasedName,
-			sunriseDate: data.sunriseDate,
-			sunsetDate: data.sunsetDate,
-			serviceDate: data.serviceDate,
-			serviceTime: data.serviceTime,
-			serviceLocation: data.serviceLocation,
-			serviceAddress: data.serviceAddress,
-			themeId: data.themeId,
-			deceasedPhotoUrl: data.deceasedPhotoUrl || '', // placeholder for file upload
-		})
-		.returning();
+	try {
+		// insert validated data into the database. destructure the memorial data.
+		const [memorial] = await db
+			.insert(memorialsTable)
+			.values({
+				userId,
+				quantity: data.quantity.toString(),
+				deceasedName: data.deceasedName,
+				sunriseDate: data.sunriseDate,
+				sunsetDate: data.sunsetDate,
+				serviceDate: data.serviceDate,
+				serviceTime: data.serviceTime,
+				serviceLocation: data.serviceLocation,
+				serviceAddress: data.serviceAddress,
+				themeId: data.themeId,
+				deceasedPhotoUrl: data.deceasedPhotoUrl || '', // placeholder for file upload
+			})
+			.returning();
 
-	return {
-		id: memorial.id,
-	};
+		// Step 2: Get all products
+		const products = await db.select().from(productsTable);
+
+		// Step 3: Create memorial_products entries for each product
+		if (products.length > 0) {
+			await db.insert(memorialProductsTable).values(
+				products.map((product) => ({
+					memorialId: memorial.id,
+					productId: product.id,
+					savedData: {}, // Empty object as per your schema
+					inOrder: false, // Default value
+				}))
+			);
+		}
+
+		return {
+			id: memorial.id,
+		};
+	} catch (error) {
+		console.error('Error creating memorial:', error);
+		return {
+			error: true,
+			message: 'Failed to create memorial and assign products',
+		};
+	}
 };
 
 // Only update the deceasedPhotoUrl column
@@ -79,7 +106,7 @@ export async function updateMemorialPhoto(
 	try {
 		await db
 			.update(memorialsTable)
-			.set({ deceasedPhotoUrl })
+			.set({ deceasedPhotoUrl, updatedAt: new Date() })
 			.where(and(eq(memorialsTable.id, id), eq(memorialsTable.userId, userId)));
 		return { id };
 	} catch (error: unknown) {

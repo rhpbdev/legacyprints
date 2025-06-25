@@ -2,10 +2,11 @@
 'use server';
 
 import { db } from '@/db';
-import { memorialsTable } from '@/db/schema';
+import { memorialProductsTable, memorialsTable } from '@/db/schema';
 import { memorialSchema } from '@/validation/memorialSchema';
 import { auth } from '@clerk/nextjs/server';
 import { and, eq } from 'drizzle-orm';
+import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 
 const updateMemorialSchema = memorialSchema.and(
@@ -57,10 +58,48 @@ export async function updateMemorial(data: {
 			serviceAddress: data.serviceAddress,
 			themeId: data.themeId,
 			deceasedPhotoUrl: data.deceasedPhotoUrl,
+			updatedAt: new Date(),
 		})
 		.where(
 			and(eq(memorialsTable.id, data.id), eq(memorialsTable.userId, userId))
 		);
+}
+
+export async function updateMemorialProductOrder(
+	memorialProductId: string,
+	inOrder: boolean
+) {
+	const { userId } = await auth();
+
+	if (!userId) {
+		return {
+			error: true,
+			message: 'Unauthorized',
+		};
+	}
+
+	try {
+		await db
+			.update(memorialProductsTable)
+			.set({
+				inOrder,
+				updatedAt: new Date(),
+			})
+			.where(eq(memorialProductsTable.id, memorialProductId));
+
+		// Revalidate the cache
+		revalidateTag('memorial-products');
+
+		return {
+			error: false,
+		};
+	} catch (error) {
+		console.error('Error updating memorial product order:', error);
+		return {
+			error: true,
+			message: 'Failed to update order status',
+		};
+	}
 }
 
 export async function deleteMemorial(memorialId: number) {

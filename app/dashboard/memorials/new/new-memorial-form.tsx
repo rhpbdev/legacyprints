@@ -1,4 +1,5 @@
 // File: app/dashboard/memorials/new/new-memorial-form.tsx
+// old form not in use
 'use client';
 
 import MemorialForm, { memorialFormSchema } from '@/components/memorial-form';
@@ -21,6 +22,7 @@ export default function NewMemorialForm({ themes }: { themes: Themes[] }) {
 		});
 		return null;
 	}
+
 
 	const handleSubmit = async (
 		data: z.infer<typeof memorialFormSchema>,

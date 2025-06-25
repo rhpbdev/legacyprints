@@ -9,12 +9,12 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { getRecentMemorials } from '@/data/getRecentMemorials';
-import Image from 'next/image';
+import { Image } from '@imagekit/next';
 import numeral from 'numeral';
 import { format, parseISO } from 'date-fns';
 import Link from 'next/link';
 import { Button } from './ui/button';
-import { ImagesIcon, PencilIcon } from 'lucide-react';
+import { ImagesIcon, PencilIcon, ShoppingCartIcon } from 'lucide-react';
 
 export default async function MemorialsTable() {
 	const memorials = await getRecentMemorials();
@@ -31,7 +31,7 @@ export default async function MemorialsTable() {
 				<Table className='mt-4'>
 					<TableHeader>
 						<TableRow className='bg-gray-50'>
-							<TableHead>Date</TableHead>
+							<TableHead>Service Date</TableHead>
 							<TableHead>Cover</TableHead>
 							<TableHead>Name</TableHead>
 							<TableHead>Program</TableHead>
@@ -47,25 +47,18 @@ export default async function MemorialsTable() {
 									{format(parseISO(memorial.serviceDate), 'MMMM d, yyyy')}
 								</TableCell>
 								<TableCell>
-									<Button
-										asChild
-										variant='ghost'
-										size='icon'
-										aria-label='View Memorial'>
-										<Link
-											href={`/dashboard/memorials/${memorial.id}`}
-											title={`Edit ${memorial.deceasedName}`}
-											prefetch={false}>
-											<Image
-												src={memorial.deceasedPhotoUrl}
-												alt={memorial.deceasedName}
-												width={48}
-												height={48}
-												className='rounded'
-												loading='lazy'
-											/>
-										</Link>
-									</Button>
+									<Link
+										href={`/dashboard/memorials/${memorial.id}`}
+										title={`Edit ${memorial.deceasedName}`}
+										prefetch={false}>
+										<Image
+											src={memorial.deceasedPhotoUrl}
+											alt={memorial.deceasedName}
+											width={48}
+											height={48}
+											className='w-12 h-12 object-cover rounded'
+										/>
+									</Link>
 								</TableCell>
 								<TableCell>{memorial.deceasedName}</TableCell>
 								<TableCell className='capitalize'>
@@ -107,6 +100,18 @@ export default async function MemorialsTable() {
 											className='text-blue-500 hover:text-blue-600'
 											prefetch={false}>
 											<ImagesIcon />
+										</Link>
+									</Button>
+									<Button
+										size={'icon'}
+										aria-label='Manage memorial products'
+										asChild>
+										<Link
+											href={`/dashboard/memorials/${memorial.id}/memorial-products`}
+											title={'Manage memorial products'}
+											className='bg-slate-800 hover:bg-slate-700'
+											prefetch={false}>
+											<ShoppingCartIcon />
 										</Link>
 									</Button>
 								</TableCell>

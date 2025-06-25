@@ -21,7 +21,7 @@ const HomePage = () => {
 	return (
 		<>
 			{/* Hero Section */}
-			<section className='pt-48 pb-32 px-6 md:px-16 bg-gradient-to-br from-slate-50 to-slate-200'>
+			<section className='pt-32 pb-32 px-6 md:pt-48 md:px-16 bg-gradient-to-br from-slate-50 to-slate-200'>
 				<div className='container mx-auto flex flex-col items-center text-center max-w-4xl gap-y-8'>
 					<h1 className='text-5xl md:text-6xl font-bold leading-tight'>
 						Create Beautiful & Lasting Memorial Tributes

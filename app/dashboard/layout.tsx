@@ -1,4 +1,5 @@
 import { Sidebar } from '@/components/sidebar';
+import { ImageKitProvider } from '@imagekit/next';
 
 export default function RootLayout({
 	children,
@@ -9,7 +10,11 @@ export default function RootLayout({
 		<>
 			<main className='flex'>
 				<Sidebar />
-				<div className='flex-1 overflow-auto'>{children}</div>
+				<div className='flex-1 overflow-auto'>
+					<ImageKitProvider urlEndpoint='https://ik.imagekit.io/rhpbdev'>
+						{children}
+					</ImageKitProvider>
+				</div>
 			</main>
 		</>
 	);

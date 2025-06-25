@@ -28,6 +28,8 @@ export async function getMemorialsByMonth({
 			quantity: memorialsTable.quantity,
 			serviceDate: memorialsTable.serviceDate,
 			deceasedPhotoUrl: memorialsTable.deceasedPhotoUrl,
+			createdAt: memorialsTable.createdAt,
+			updatedAt: memorialsTable.updatedAt,
 			theme: themesTable.name,
 			programType: themesTable.type,
 		})
@@ -39,7 +41,7 @@ export async function getMemorialsByMonth({
 				lte(memorialsTable.serviceDate, format(latestDate, 'yyyy-MM-dd'))
 			)
 		)
-		.orderBy(desc(memorialsTable.serviceDate))
+		.orderBy(desc(memorialsTable.createdAt))
 		.leftJoin(themesTable, eq(memorialsTable.themeId, themesTable.id));
 
 	return memorials;
