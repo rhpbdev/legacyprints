@@ -1,3 +1,4 @@
+// File: @/app/dashboard/memorials/layout.tsx
 import { Sidebar } from '@/components/sidebar';
 import { ImageKitProvider } from '@imagekit/next';
 

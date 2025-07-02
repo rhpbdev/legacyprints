@@ -1,3 +1,4 @@
+// File: @/components/sidebar.tsx
 'use client';
 
 import { useState } from 'react';

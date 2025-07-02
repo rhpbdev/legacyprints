@@ -1,4 +1,4 @@
-// components/canvas.tsx
+// File: @/components/canvas.tsx
 'use client';
 import { useThemedCanvas } from '@/hooks/useThemedCanvas';
 import { useState, useEffect, useCallback } from 'react';
@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { getMemorialProductData } from '@/data/getMemorialProductData';
 import { Button } from './ui/button';
 import DeleteObject from './DeleteObjectButton';
+import TextSettings from './TextSettings';
 
 interface Theme {
 	id: number;
@@ -116,6 +117,10 @@ const Canvas = ({ theme, memorial }: CanvasCopilotProps) => {
 		<div className='canvas-container'>
 			{/* Toolbar */}
 			<div className='flex align-center justify-center border-b-2 p-6 space-x-16'>
+				{/* Settings panel */}
+				<div>
+					<TextSettings canvas={fabricCanvas} />
+				</div>
 				<div className='flex gap-2'>
 					<Button variant='outline' className='cursor-pointer'>
 						Add Photos
@@ -134,70 +139,71 @@ const Canvas = ({ theme, memorial }: CanvasCopilotProps) => {
 						memorialId={memorial.id}
 						disabled={isLoading || isLoadingSavedData}
 						currentPageIndex={currentPage}
-						existingData={canvasData} // Pass the current data (saved or theme)
+						existingData={canvasData}
 					/>
 					<Button variant='outline' className='cursor-pointer'>
 						Load Design
 					</Button>
 				</div>
 			</div>
-			<div
-				className='canvas-wrapper flex justify-center p-6'
-				style={{ position: 'relative' }}>
-				{showLoading && (
-					<div
-						style={{
-							position: 'absolute',
-							top: 0,
-							left: 0,
-							width: '100%',
-							height: '100%',
-							backgroundColor: 'rgba(255, 255, 255, 0.9)',
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-							zIndex: 10,
-						}}>
+			<div className='flex flex-col justify-start items-center top-0'>
+				<div
+					className='canvas-wrapper flex justify-center p-6'
+					style={{ position: 'relative' }}>
+					{showLoading && (
 						<div
 							style={{
-								textAlign: 'center',
-								padding: '20px',
+								position: 'absolute',
+								top: 0,
+								left: 0,
+								width: '100%',
+								height: '100%',
+								backgroundColor: 'rgba(255, 255, 255, 0.9)',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								zIndex: 10,
 							}}>
-							<div style={{ marginBottom: '10px' }}>
-								{isLoadingSavedData
-									? 'Loading saved design...'
-									: 'Loading theme...'}
-							</div>
 							<div
 								style={{
-									width: '40px',
-									height: '40px',
-									border: '3px solid #f3f3f3',
-									borderTop: '3px solid #3498db',
-									borderRadius: '50%',
-									animation: 'spin 1s linear infinite',
-									margin: '0 auto',
-								}}
-							/>
+									textAlign: 'center',
+									padding: '20px',
+								}}>
+								<div style={{ marginBottom: '10px' }}>
+									{isLoadingSavedData
+										? 'Loading saved design...'
+										: 'Loading theme...'}
+								</div>
+								<div
+									style={{
+										width: '40px',
+										height: '40px',
+										border: '3px solid #f3f3f3',
+										borderTop: '3px solid #3498db',
+										borderRadius: '50%',
+										animation: 'spin 1s linear infinite',
+										margin: '0 auto',
+									}}
+								/>
+							</div>
 						</div>
-					</div>
-				)}
-
-				<canvas
-					ref={canvasRef}
-					width={dimensions.width}
-					height={dimensions.height}
-					style={{
-						border: '1px solid #ccc',
-						borderRadius: '4px',
-						boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-					}}
-				/>
+					)}
+					<canvas
+						ref={canvasRef}
+						width={dimensions.width}
+						height={dimensions.height}
+						style={{
+							border: '1px solid #ccc',
+							borderRadius: '4px',
+							boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+						}}
+					/>
+				</div>
 			</div>
 
 			{totalPages > 1 && (
 				<div
-					className='page-controls'
+					className='page-controls pb-4'
 					style={{
 						display: 'flex',
 						gap: '10px',

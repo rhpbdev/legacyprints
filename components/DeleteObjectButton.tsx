@@ -1,3 +1,4 @@
+// File: @/components/DeleteObjectButton.tsx
 import { Button } from './ui/button';
 import { toast } from 'sonner';
 import { Trash } from 'lucide-react';

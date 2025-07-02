@@ -75,7 +75,7 @@ export default async function MemorialsTable() {
 								<TableCell>
 									{numeral(memorial.quantity).format('0,0[.]00')}
 								</TableCell>
-								<TableCell className='text-right inline-flex gap-1'>
+								<TableCell className='space-x-1'>
 									<Button
 										variant={'outline'}
 										size={'icon'}

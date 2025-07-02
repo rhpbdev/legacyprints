@@ -1,7 +1,7 @@
-// hooks/useThemedCanvas.ts
+// @/hooks/useThemedCanvas.ts
 import { useEffect, useRef, useState, useCallback } from 'react';
 import * as fabric from 'fabric';
-import { FabricObject } from 'fabric';
+import { loadCustomFonts } from '@/utils/customFonts';
 
 interface Theme {
 	id: number;
@@ -41,6 +41,20 @@ interface UseThemedCanvasOptions {
 	memorial: Memorial;
 }
 
+// Type for fabric object with custom properties
+interface FabricObjectWithCustomProps {
+	text?: string;
+	type: string;
+	name?: string;
+	src?: string;
+	scaleX?: number;
+	scaleY?: number;
+	clipPath?: string;
+	hasControls?: boolean;
+	hasBorders?: boolean;
+	lockScalingFlip?: boolean;
+}
+
 export const useThemedCanvas = ({
 	theme,
 	onPageLoad,
@@ -51,6 +65,7 @@ export const useThemedCanvas = ({
 	const [currentPage, setCurrentPage] = useState(0);
 	const [totalPages, setTotalPages] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
+	const [fontsLoaded, setFontsLoaded] = useState(false);
 	const isInitializedRef = useRef(false);
 	const loadingRef = useRef(false);
 	const isDisposedRef = useRef(false);
@@ -61,8 +76,15 @@ export const useThemedCanvas = ({
 			? { width: 1100, height: 760 }
 			: { width: 800, height: 600 };
 
-	/* eslint-disable @typescript-eslint/no-explicit-any */
-	const replacePlaceholdersInJson = (json: any, memorial: Memorial): any => {
+	const replacePlaceholdersInJson = (
+		json: {
+			objects: FabricObjectWithCustomProps[];
+			version: string;
+			background?: string;
+			backgroundImage?: string;
+		},
+		memorial: Memorial
+	): typeof json => {
 		const placeholderMap: Record<string, string> = {
 			'{{deceasedName}}': memorial.deceasedName,
 			'{{sunriseDate}}': memorial.sunriseDate,
@@ -73,39 +95,57 @@ export const useThemedCanvas = ({
 
 		const deepClone = structuredClone(json);
 
-		deepClone.objects = deepClone.objects.map((obj: FabricObject) => {
-			const anyObj = obj as any;
+		deepClone.objects = deepClone.objects.map(
+			(obj: FabricObjectWithCustomProps) => {
+				// Replace text fields
+				if (typeof obj.text === 'string') {
+					Object.entries(placeholderMap).forEach(([key, value]) => {
+						obj.text = obj.text!.replaceAll(key, value);
+					});
+				}
 
-			// Replace text fields
-			if (typeof anyObj.text === 'string') {
-				Object.entries(placeholderMap).forEach(([key, value]) => {
-					anyObj.text = anyObj.text.replaceAll(key, value);
-				});
+				// Replace image source based on name and scale it
+				if (
+					obj.type?.toLowerCase() === 'image' &&
+					obj.name === 'deceased_cover_photo'
+				) {
+					obj.src = memorial.deceasedPhotoUrl;
+				}
+
+				return obj;
 			}
-
-			// Replace image source based on name
-			if (
-				anyObj.type?.toLowerCase() === 'image' &&
-				anyObj.name === 'deceased_cover_photo'
-			) {
-				anyObj.src = memorial.deceasedPhotoUrl;
-			}
-
-			return obj;
-		});
+		);
 
 		return deepClone;
 	};
 
-	// Initialize canvas - only once
+	// Load custom fonts before initializing canvas
 	useEffect(() => {
-		// Early return if no canvas ref or theme data
-		if (!canvasRef.current || !theme?.data?.pages) return;
+		const loadFonts = async () => {
+			try {
+				console.log('Loading custom fonts...');
+				await loadCustomFonts();
+				setFontsLoaded(true);
+				console.log('Custom fonts loaded successfully');
+			} catch (error) {
+				console.error('Error loading custom fonts:', error);
+				// Still set as loaded to not block canvas initialization
+				setFontsLoaded(true);
+			}
+		};
+
+		loadFonts();
+	}, []);
+
+	// Initialize canvas - only after fonts are loaded
+	useEffect(() => {
+		// Early return if no canvas ref, theme data, or fonts not loaded
+		if (!canvasRef.current || !theme?.data?.pages || !fontsLoaded) return;
 
 		// Prevent re-initialization
 		if (isInitializedRef.current) return;
 
-		console.log('Initializing canvas');
+		console.log('Initializing canvas with loaded fonts');
 		isInitializedRef.current = true;
 		isDisposedRef.current = false;
 
@@ -154,7 +194,7 @@ export const useThemedCanvas = ({
 			fabricCanvasRef.current = null;
 			isInitializedRef.current = false;
 		};
-	}, []); // Minimal dependencies to prevent re-initialization
+	}, [dimensions.width, dimensions.height, theme.data.pages, fontsLoaded]); // Added fontsLoaded dependency
 
 	// Load page effect - with proper dependency management
 	useEffect(() => {
@@ -162,7 +202,8 @@ export const useThemedCanvas = ({
 			!fabricCanvasRef.current ||
 			!theme?.data?.pages ||
 			loadingRef.current ||
-			isDisposedRef.current
+			isDisposedRef.current ||
+			!fontsLoaded // Don't load pages until fonts are ready
 		)
 			return;
 
@@ -181,7 +222,7 @@ export const useThemedCanvas = ({
 
 			try {
 				const pageData = theme.data.pages[currentPage];
-				console.log(`Loading page ${currentPage + 1}`);
+				console.log(`Loading page ${currentPage + 1} with custom fonts`);
 
 				// Clear existing content
 				canvas.clear();
@@ -189,7 +230,9 @@ export const useThemedCanvas = ({
 				// Prepare the JSON data
 				const rawJsonData = {
 					version: pageData.version || '6.7.0',
-					objects: pageData.objects || [],
+					objects:
+						(pageData.objects as unknown as FabricObjectWithCustomProps[]) ||
+						[],
 					background: pageData.background,
 					backgroundImage: pageData.backgroundImage,
 				};
@@ -225,8 +268,10 @@ export const useThemedCanvas = ({
 						canvas.getObjects().forEach((object) => {
 							if (object.type === 'image' || object.type === 'Image') {
 								const img = object as fabric.Image;
+								console.log('image', img);
 								// Ensure image is rendered
 								if (img.getElement && !img.getElement()) {
+									console.log('image', img);
 									canvas.requestRenderAll();
 								}
 							}
@@ -260,7 +305,7 @@ export const useThemedCanvas = ({
 					onPageLoad(currentPage);
 				}
 
-				console.log(`Page ${currentPage + 1} loaded successfully`);
+				console.log(`Page ${currentPage + 1} loaded successfully with fonts`);
 			} catch (error) {
 				console.error('Error loading page:', error);
 			} finally {
@@ -277,7 +322,14 @@ export const useThemedCanvas = ({
 		return () => {
 			clearTimeout(timeoutId);
 		};
-	}, [currentPage, theme.id, theme.data.pages, onPageLoad, memorial]);
+	}, [
+		currentPage,
+		theme.id,
+		theme.data.pages,
+		onPageLoad,
+		memorial,
+		fontsLoaded,
+	]);
 
 	// Navigation functions
 	const goToPage = useCallback(
@@ -306,7 +358,7 @@ export const useThemedCanvas = ({
 		fabricCanvas: fabricCanvasRef.current,
 		currentPage,
 		totalPages,
-		isLoading,
+		isLoading: isLoading || !fontsLoaded, // Include font loading in isLoading state
 		dimensions,
 		goToPage,
 		nextPage,
